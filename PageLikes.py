@@ -44,7 +44,7 @@ def getDriver():
     chrome_options=webdriver.ChromeOptions()
     chrome_options.add_argument("--incognito")
     driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)
-    driver = webdriver.Chrome(
+    #driver = webdriver.Chrome(
         # executable_path="/home/prerak/AnacondaProjects/chromedriver") - Prerak
         # executable_path="/usr/bin/chromedriver") - Saurabh
     #change this acc to driver location in ur pc
