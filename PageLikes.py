@@ -58,6 +58,19 @@ def loginToFB():
     passbox = driver.find_element_by_css_selector("input[type='password']")
     passbox.send_keys(pass_str)#enter password
     passbox.send_keys(Keys.RETURN)
+
+def visitPage():
+    driver.get("https://www.facebook.com/pg/YourEdm/posts/")
+
+def likePost():
+    cancel = driver.find_element_by_css_selector("a[action='cancel']")  #manually exiting the notification pop-up
+    cancel.click()
+    
+    like = driver.find_elements_by_css_selector("a[role='button'][href='#'][tabindex='0']")
+    time.sleep(3)  
+    for i in range(len(like)):
+        if (like[i].get_attribute('text') == 'Like'):
+            like[i].click()
 #functions---------end
 
 
@@ -67,6 +80,8 @@ askLoginDetails()
 getDriver()
 openFB()
 loginToFB()
+visitPage()
+likePost()
 #code logic-------end
 
 
