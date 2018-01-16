@@ -36,8 +36,7 @@ driver = webdriver
 #functions---------start
 def askLoginDetails():
     global email_str,pass_str
-    email_str = input("Enter facebook e-mail > ")
-    email_str = input("Enter fb email > ")
+    email_str = input("Enter facebook e-mail >")
     pass_str = getpass.getpass("Enter password >")
 
 def getDriver():
