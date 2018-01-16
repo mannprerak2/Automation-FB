@@ -43,10 +43,10 @@ def getDriver():
     global driver
     chrome_options=webdriver.ChromeOptions()
     chrome_options.add_argument("--incognito")
-    driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)
     driver = webdriver.Chrome(
-        # executable_path="/home/prerak/AnacondaProjects/chromedriver") - Prerak
-        # executable_path="/usr/bin/chromedriver") - Saurabh
+        # executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options) - Prerak
+        # executable_path='/Users/Batman/anaconda/chromedriver',chrome_options=chrome_options) - Aman
+        # executable_path="/usr/bin/chromedriver",chrome_options=chrome_options) - Saurabh
     #change this acc to driver location in ur pc
 
 def openFB():
