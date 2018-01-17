@@ -45,7 +45,7 @@ def getDriver():
     chrome_options=webdriver.ChromeOptions()
     chrome_options.add_argument("--incognito")
     #driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)#amandeep
-    #driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)#prerak
+    driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)#prerak
     #driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options) #saurabh
     #change this acc to driver location in ur pc
 
@@ -65,23 +65,20 @@ def check_id():
     try:
         driver.find_element_by_id("email")
         print("Incorrect ID or Password. Please try again.")
-        return False
+        exit(0)
+        
     except NoSuchElementException:
         return True
 
 def login():
-    while True:
-        askLoginDetails()
-        openFB()
         loginToFB()
-        if check_id():
-            break
-
-
+        check_id()
+        
 def visitPage():
     pageName = "https://www.facebook.com/pg/YourEdm/posts/"
-    driver.get(pageName)
     print("Visiting ->",pageName) 
+    driver.get(pageName)
+
 
 def likePost():
     #cancel = driver.find_element_by_css_selector("a[action='cancel']")  #manually exiting the notification pop-up
@@ -101,7 +98,9 @@ def likePost():
 
 
 #code logic-------start
+askLoginDetails()
 getDriver()
+openFB()
 login()
 visitPage()
 likePost()
