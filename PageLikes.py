@@ -19,6 +19,7 @@
 import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 import time
 import getpass
 #imports-------end
@@ -36,15 +37,15 @@ driver = webdriver
 #functions---------start
 def askLoginDetails():
     global email_str,pass_str
-    email_str = input("Enter fb email > ")
-    pass_str = getpass.getpass("Enter password >")
+    email_str = input("Enter facebook e-mail > ")
+    pass_str = getpass.getpass("Enter password >")    
 
 def getDriver():
     global driver
     chrome_options=webdriver.ChromeOptions()
     chrome_options.add_argument("--incognito")
     #driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)#amandeep
-    driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)#prerak
+    #driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)#prerak
     #driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options) #saurabh
     #change this acc to driver location in ur pc
 
@@ -52,11 +53,30 @@ def openFB():
     driver.get("https://www.facebook.com/")
 
 def loginToFB():
+    global email_str,pass_str
     emailbox = driver.find_element_by_css_selector("input[type='email']")
     emailbox.send_keys(email_str)#enter email
     passbox = driver.find_element_by_css_selector("input[type='password']")
     passbox.send_keys(pass_str)#enter password
     passbox.send_keys(Keys.RETURN)
+
+def check_id():
+    time.sleep(3)
+    try:
+        driver.find_element_by_id("email")
+        print("Incorrect ID or Password. Please try again.")
+        return False
+    except NoSuchElementException:
+        return True
+
+def login():
+    while True:
+        askLoginDetails()
+        openFB()
+        loginToFB()
+        if check_id():
+            break
+
 
 def visitPage():
     pageName = "https://www.facebook.com/pg/YourEdm/posts/"
@@ -81,10 +101,8 @@ def likePost():
 
 
 #code logic-------start
-askLoginDetails()
 getDriver()
-openFB()
-loginToFB()
+login()
 visitPage()
 likePost()
 #code logic-------end
