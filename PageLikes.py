@@ -17,11 +17,12 @@
 
 #imports------start
 import selenium
+import time
+import getpass
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
-import time
-import getpass
+
 #imports-------end
 
 
@@ -34,13 +35,9 @@ driver = webdriver
 
 
 #functions---------start
-def askLoginDetails():
-    global email_str,pass_str
-    email_str = input("Enter Facebook e-mail or username > ")
-    pass_str = getpass.getpass("Enter password >")    
-
 def getDriver():
     global driver
+    
     chrome_options=webdriver.ChromeOptions()
     chrome_options.add_argument("--incognito")
     #driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)            #amandeep
@@ -49,6 +46,13 @@ def getDriver():
     
     #change this acc to driver location in ur pc
 
+def askLoginDetails():
+    global email_str,pass_str,pageName
+    
+    email_str = input("Enter Facebook e-mail or username > ")
+    pass_str = getpass.getpass("Enter password >")    
+    pageName = input("Enter the page link >")
+    
 def openFB():
     driver.get("https://www.facebook.com/")
 
@@ -72,18 +76,10 @@ def check_id():
     except NoSuchElementException:
         return True
 
-def login():
-        loginToFB()
-        check_id()
-        
 def visitPage():
-    global pageName
-
-    pageName = input("Enter the page link >")
     pageName = pageName + 'posts'
     print("Visiting ->",pageName) 
     driver.get(pageName)
-
 
 def likePost():
     #cancel = driver.find_element_by_css_selector("a[action='cancel']")  #manually exiting the notification pop-up
@@ -102,16 +98,24 @@ def likePost():
                 if (int(like[index].get_attribute('clientWidth')) > 0):
                     driver.execute_script("arguments[0].click();",like[index])
                     counter+=1
+
         new_height = driver.execute_script("return document.body.scrollHeight")
         
         if new_height == last_height:
             break
+
         last_height = new_height
         i+=1
+
         if (i>10):
            break
+
     print (str(counter) + " posts liked")
 
+def login():
+        loginToFB()
+        check_id()
+        
 #functions---------end
 
 
