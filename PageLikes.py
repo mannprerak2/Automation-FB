@@ -19,6 +19,7 @@
 import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 import time
 import getpass
 #imports-------end
@@ -36,8 +37,8 @@ driver = webdriver
 #functions---------start
 def askLoginDetails():
     global email_str,pass_str
-    email_str = input("Enter fb email > ")
-    pass_str = getpass.getpass("Enter password >")
+    email_str = input("Enter facebook e-mail > ")
+    pass_str = getpass.getpass("Enter password >")    
 
 def getDriver():
     global driver
@@ -52,16 +53,32 @@ def openFB():
     driver.get("https://www.facebook.com/")
 
 def loginToFB():
+    global email_str,pass_str
     emailbox = driver.find_element_by_css_selector("input[type='email']")
     emailbox.send_keys(email_str)#enter email
     passbox = driver.find_element_by_css_selector("input[type='password']")
     passbox.send_keys(pass_str)#enter password
     passbox.send_keys(Keys.RETURN)
 
+def check_id():
+    time.sleep(3)
+    try:
+        driver.find_element_by_id("email")
+        print("Incorrect ID or Password. Please try again.")
+        exit(0)
+        
+    except NoSuchElementException:
+        return True
+
+def login():
+        loginToFB()
+        check_id()
+        
 def visitPage():
     pageName = "https://www.facebook.com/pg/YourEdm/posts/"
-    driver.get(pageName)
     print("Visiting ->",pageName) 
+    driver.get(pageName)
+
 
 def likePost():
     #cancel = driver.find_element_by_css_selector("a[action='cancel']")  #manually exiting the notification pop-up
@@ -84,7 +101,7 @@ def likePost():
 askLoginDetails()
 getDriver()
 openFB()
-loginToFB()
+login()
 visitPage()
 likePost()
 #code logic-------end
