@@ -31,6 +31,7 @@ email_str = ""
 pass_str = ""
 pageName = ""
 likes=0
+counter=0
 driver = webdriver
 #global variables----------end
 
@@ -41,8 +42,8 @@ def getDriver():
     
     chrome_options=webdriver.ChromeOptions()
     chrome_options.add_argument("--incognito")
-    driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)            #amandeep
-    #driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)     #prerak
+    #driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)            #amandeep
+    driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)     #prerak
     #driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options)                            #saurabh
     
     #change this acc to driver location in ur pc
@@ -85,10 +86,11 @@ def visitPage():
     driver.get(pageName)
 
 def likePost():
+    global counter
     counter = 0
     last_height = 0
     i=0
-
+    print("Working on it...")
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(5)
@@ -108,12 +110,13 @@ def likePost():
 
         last_height = new_height
 
-
-    print (str(counter) + " posts liked.")
-
 def login():
         loginToFB()
         check_id()
+        
+def printStats():
+    global counter
+    print ("\n","Total Posts Liked > ",str(counter))
         
 #functions---------end
 
@@ -125,6 +128,7 @@ openFB()
 login()
 visitPage()
 likePost()
+printStats()
 driver.close()
 #code logic-------end
 
