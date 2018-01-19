@@ -13,8 +13,6 @@
     # 4) code
     # 5) algo or how to...(complex stuff only)
 
-
-
 #imports------start
 import selenium
 import time
@@ -44,7 +42,7 @@ def getDriver():
     chrome_options.add_argument("--incognito")
     #driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)            #amandeep
     driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)     #prerak
-    #driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options)                            #saurabh
+    # driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options)                            #saurabh
     
     #change this acc to driver location in ur pc
 
@@ -69,7 +67,7 @@ def loginToFB():
     passbox.send_keys(Keys.RETURN)
 
 def check_id():
-    time.sleep(3)
+    time.sleep(2)
     try:
         driver.find_element_by_id("email")
         print("Incorrect ID or Password. Please try again.")
@@ -84,6 +82,14 @@ def visitPage():
     pageName = pageName + 'posts'
     print("Visiting ->",pageName) 
     driver.get(pageName)
+
+def likePage():
+    try:
+        likeBtn = driver.find_element_by_css_selector("button[data-testid='page_profile_like_button_test_id']")     
+        likeBtn.click();
+
+    except NoSuchElementException:
+        return True
 
 def likePost():
     global counter
@@ -127,6 +133,7 @@ getDriver()
 openFB()
 login()
 visitPage()
+likePage()
 likePost()
 printStats()
 driver.close()
