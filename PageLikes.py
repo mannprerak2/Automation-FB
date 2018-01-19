@@ -30,6 +30,8 @@ from selenium.common.exceptions import NoSuchElementException
 email_str = ""
 pass_str = ""
 pageName = ""
+likes=0
+counter=0
 driver = webdriver
 #global variables----------end
 
@@ -41,17 +43,18 @@ def getDriver():
     chrome_options=webdriver.ChromeOptions()
     chrome_options.add_argument("--incognito")
     #driver = webdriver.Chrome(executable_path='/Users/Batman/anaconda3/chromedriver',chrome_options=chrome_options)            #amandeep
-    # driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)     #prerak
-    driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options)                            #saurabh
+    driver = webdriver.Chrome(executable_path="/home/prerak/AnacondaProjects/chromedriver",chrome_options=chrome_options)     #prerak
+    #driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options)                            #saurabh
     
     #change this acc to driver location in ur pc
 
 def askLoginDetails():
-    global email_str,pass_str,pageName
-    
+    global email_str,pass_str,pageName,likes
     email_str = input("Enter Facebook e-mail or username > ")
     pass_str = getpass.getpass("Enter password >")    
     pageName = input("Enter the page link >")
+    likes= input("Enter number of posts to be liked(Enter 0 to like all possible posts) >")
+    likes=int(likes)
     
 def openFB():
     driver.get("https://www.facebook.com/")
@@ -70,25 +73,24 @@ def check_id():
     try:
         driver.find_element_by_id("email")
         print("Incorrect ID or Password. Please try again.")
-        # exit(0)
         driver.close()
+        exit(0)
         
     except NoSuchElementException:
         return True
 
 def visitPage():
+    global pageName
     pageName = pageName + 'posts'
     print("Visiting ->",pageName) 
     driver.get(pageName)
 
 def likePost():
-    #cancel = driver.find_element_by_css_selector("a[action='cancel']")  #manually exiting the notification pop-up
-    #cancel.click()  # not required as we use icognito 
-    
+    global counter
     counter = 0
     last_height = 0
     i=0
-
+    print("Working on it...")
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(5)
@@ -98,6 +100,8 @@ def likePost():
                 if (int(like[index].get_attribute('clientWidth')) > 0):
                     driver.execute_script("arguments[0].click();",like[index])
                     counter+=1
+            if likes>0 and likes==counter:
+                return
 
         new_height = driver.execute_script("return document.body.scrollHeight")
         
@@ -105,16 +109,14 @@ def likePost():
             break
 
         last_height = new_height
-        i+=1
-
-        if (i>10):
-           break
-
-    print (str(counter) + " posts liked")
 
 def login():
         loginToFB()
         check_id()
+        
+def printStats():
+    global counter
+    print ("\n","Total Posts Liked > ",str(counter))
         
 #functions---------end
 
@@ -126,6 +128,8 @@ openFB()
 login()
 visitPage()
 likePost()
+printStats()
+driver.close()
 #code logic-------end
 
 
