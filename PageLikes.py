@@ -13,8 +13,6 @@
     # 4) code
     # 5) algo or how to...(complex stuff only)
 
-
-
 #imports------start
 import selenium
 import time
